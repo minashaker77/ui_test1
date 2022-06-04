@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -11,7 +11,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List title = ["Places", "Inspiration", "Emotions"];
   List name = ["Places", "Inspiration", "Emotions"];
-  int select = 0;
+  RxInt select = 0.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 20),
             Row(
               children: [
-                Icon(Icons.menu_sharp),
+                const Icon(Icons.menu_sharp),
                 const Spacer(),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(16),
@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 10),
             Row(
-              children: [
+              children: const [
                 Text(
                   'Discover',
                   textAlign: TextAlign.left,
@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 )
               ],
             ),
-            Container(
+            SizedBox(
               height: 50,
               child: ListView.builder(
                   itemCount: title.length,
@@ -59,38 +59,40 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.all(8),
                         child: Column(
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  select = index;
-                                });
-                              },
-                              child: Text(
-                                title[index],
-                                style: TextStyle(
-                                    color: index == select
-                                        ? Colors.black
-                                        : Colors.grey,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold),
+                            Obx(
+                              () => GestureDetector(
+                                onTap: () {
+                                  select.value = index;
+                                },
+                                child: Text(
+                                  title[index],
+                                  style: TextStyle(
+                                      color: index == select.value
+                                          ? Colors.black
+                                          : Colors.grey,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ),
-                            SizedBox(height: 2),
-                            Visibility(
-                                visible: index == select,
-                                child: Container(
-                                  width: 5,
-                                  height: 5,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                )),
+                            const SizedBox(height: 2),
+                            Obx(
+                              () => Visibility(
+                                  visible: index == select.value,
+                                  child: Container(
+                                    width: 5,
+                                    height: 5,
+                                    decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                  )),
+                            ),
                           ],
                         ),
                       )),
             ),
-            Container(
+            SizedBox(
               height: 300,
               child: ListView.builder(
                 itemCount: 5,
@@ -110,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   'Explore more',
                   style: TextStyle(
                     color: Colors.black,
@@ -118,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontSize: 20,
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 Text(
                   'See all',
                   style: TextStyle(
@@ -126,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 )
               ],
             ),
-            Container(
+            SizedBox(
               height: 150,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -144,10 +146,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Text(
                         name[index],
-                        style: TextStyle(color: Colors.black),
+                        style: const TextStyle(color: Colors.black),
                       ),
                     ],
                   ),
